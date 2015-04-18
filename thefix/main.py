@@ -12,7 +12,7 @@ Rule = namedtuple('Rule', ('match', 'get_new_command'))
 
 def setup_user_dir():
     """Returns user config dir, create it when it doesn't exists."""
-    user_dir = Path(expanduser('~/.thefuck'))
+    user_dir = Path(expanduser('~/.thefix'))
     if not user_dir.is_dir():
         user_dir.mkdir()
         user_dir.joinpath('rules').mkdir()
@@ -76,14 +76,14 @@ def run_rule(rule, command, settings):
 
 
 def is_second_run(command):
-    """It's second run of `fuck`?"""
-    return command.script.startswith('fuck')
+    """It's second run of `fix`?"""
+    return command.script.startswith('fix')
 
 
 def main():
     command = get_command(sys.argv)
     if is_second_run(command):
-        print("echo Can't fuck twice")
+        print("echo Can't fix twice")
     else:
         user_dir = setup_user_dir()
         settings = get_settings(user_dir)
@@ -92,4 +92,4 @@ def main():
         if matched_rule:
             run_rule(matched_rule, command, settings)
         else:
-            print('echo No fuck given')
+            print('echo No fix given')

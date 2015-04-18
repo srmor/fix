@@ -1,28 +1,28 @@
 from subprocess import PIPE
 from pathlib import PosixPath, Path
 from mock import patch, Mock
-from thefuck import main
+from thefix import main
 
 
 def test_setup_user_dir():
-    with patch('thefuck.main.Path.is_dir', return_value=False), \
-         patch('thefuck.main.Path.mkdir') as mkdir, \
-            patch('thefuck.main.Path.touch') as touch:
+    with patch('thefix.main.Path.is_dir', return_value=False), \
+         patch('thefix.main.Path.mkdir') as mkdir, \
+            patch('thefix.main.Path.touch') as touch:
         main.setup_user_dir()
         assert mkdir.call_count == 2
         assert touch.call_count == 1
-    with patch('thefuck.main.Path.is_dir', return_value=True), \
-         patch('thefuck.main.Path.mkdir') as mkdir, \
-            patch('thefuck.main.Path.touch') as touch:
+    with patch('thefix.main.Path.is_dir', return_value=True), \
+         patch('thefix.main.Path.mkdir') as mkdir, \
+            patch('thefix.main.Path.touch') as touch:
         main.setup_user_dir()
         assert mkdir.call_count == 0
         assert touch.call_count == 0
 
 
 def test_get_settings():
-    with patch('thefuck.main.load_source', return_value=Mock(rules=['bash'])):
+    with patch('thefix.main.load_source', return_value=Mock(rules=['bash'])):
         assert main.get_settings(Path('/')).rules == ['bash']
-    with patch('thefuck.main.load_source', return_value=Mock(spec=[])):
+    with patch('thefix.main.load_source', return_value=Mock(spec=[])):
         assert main.get_settings(Path('/')).rules is None
 
 
@@ -35,7 +35,7 @@ def test_is_rule_enabled():
 def test_load_rule():
     match = object()
     get_new_command = object()
-    with patch('thefuck.main.load_source',
+    with patch('thefix.main.load_source',
                return_value=Mock(
                    match=match,
                    get_new_command=get_new_command)) as load_source:
@@ -44,8 +44,8 @@ def test_load_rule():
 
 
 def test_get_rules():
-    with patch('thefuck.main.Path.glob') as glob, \
-            patch('thefuck.main.load_source',
+    with patch('thefix.main.Path.glob') as glob, \
+            patch('thefix.main.load_source',
                   lambda x, _: Mock(match=x, get_new_command=x)):
         glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
         assert main.get_rules(
@@ -61,10 +61,10 @@ def test_get_rules():
 
 
 def test_get_command():
-    with patch('thefuck.main.Popen') as Popen:
+    with patch('thefix.main.Popen') as Popen:
         Popen.return_value.stdout.read.return_value = b'stdout'
         Popen.return_value.stderr.read.return_value = b'stderr'
-        assert main.get_command(['thefuck', 'apt-get', 'search', 'vim']) \
+        assert main.get_command(['thefix', 'apt-get', 'search', 'vim']) \
                == main.Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,

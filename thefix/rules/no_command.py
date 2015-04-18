@@ -1,6 +1,6 @@
 from subprocess import Popen, PIPE
 import re
-from thefuck.utils import which, wrap_settings
+from thefix.utils import which, wrap_settings
 
 
 local_settings = {'command_not_found': '/usr/lib/command-not-found'}

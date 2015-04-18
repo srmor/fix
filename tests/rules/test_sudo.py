@@ -1,5 +1,5 @@
-from thefuck.main import Command
-from thefuck.rules.sudo import match, get_new_command
+from thefix.main import Command
+from thefix.rules.sudo import match, get_new_command
 
 
 def test_match():

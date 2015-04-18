@@ -1,6 +1,6 @@
 import pytest
-from thefuck.main import Command
-from thefuck.rules.git_push import match, get_new_command
+from thefix.main import Command
+from thefix.rules.git_push import match, get_new_command
 
 
 @pytest.fixture

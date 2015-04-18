@@ -1,4 +1,4 @@
-# The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck)
+# The Fix [![Build Status](https://travis-ci.org/nvbn/thefix.svg)](https://travis-ci.org/nvbn/thefix)
 
 Magnificent app which corrects your previous console command,
 inspired by [@liamosaur](https://twitter.com/liamosaur/status/506975850596536320)
@@ -11,7 +11,7 @@ Few examples:
 E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
-➜ fuck
+➜ fix
 sudo apt-get install vim
 [sudo] password for nvbn:
 Reading package lists... Done
@@ -24,7 +24,7 @@ To push the current branch and set the remote as upstream, use
     git push --set-upstream origin master
 
 
-➜ fuck
+➜ fix
 git push --set-upstream origin master
 Counting objects: 9, done.
 ...
@@ -35,7 +35,7 @@ No command 'puthon' found, did you mean:
  Command 'python' from package 'python3' (main)
 zsh: command not found: puthon
 
-➜ fuck
+➜ fix
 python
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 ...
@@ -46,36 +46,36 @@ git: 'brnch' is not a git command. See 'git --help'.
 Did you mean this?
 	branch
 
-➜ fuck
+➜ fix
 git branch
 * master
 ```
 
 ## Installation
 
-Install `The Fuck`:
+Install `The Fix`:
 
 ```bash
-sudo pip install thefuck
+sudo pip install thefix
 ```
 
 And add to `.bashrc` or `.zshrc`:
 
 ```bash
-alias fuck='$(thefuck $(fc -ln -1))'
+alias fix='$(thefix $(fc -ln -1))'
 ```
 
 Or in `config.fish`:
 
 ```fish
-function fuck
-    thefuck $history[2] | source
+function fix
+    thefix $history[2] | source
 end
 ```
 
 ## How it works
 
-The Fuck tries to match rule for the previous command, create new command
+The Fix tries to match rule for the previous command, create new command
 using matched rule and run it. Rules enabled by default:
 
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
@@ -86,13 +86,13 @@ using matched rule and run it. Rules enabled by default:
 ## Creating your own rules
 
 For adding your own rule you should create `your-rule-name.py`
-in `~/.thefuck/rules`. Rule should contain two functions:
+in `~/.thefix/rules`. Rule should contain two functions:
 `match(command: Command, settings: Settings) -> bool`
 and `get_new_command(command: Command, settings: Settings) -> str`.
 
 `Command` have three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is `~/.thefuck/settings.py`.
+`Settings` is `~/.thefix/settings.py`.
 
 Simple example of the rule for running script with `sudo`:
 
@@ -106,12 +106,12 @@ def get_new_command(command, settings):
     return 'sudo {}'.format(command.script)
 ```
 
-[More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
-[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py).
+[More examples of rules](https://github.com/nvbn/thefix/tree/master/thefix/rules),
+[utility functions for rules](https://github.com/nvbn/thefix/tree/master/thefix/utils.py).
 
 ## Settings
 
-The Fuck have a few settings parameters:
+The Fix have a few settings parameters:
 
 * `rules` &ndash; list of enabled rules, by default all;
 * `command_not_found` &ndash; path to `command_not_found` binary,
@@ -119,7 +119,7 @@ by default `/usr/lib/command-not-found`.
 
 ## Developing
 
-Install `The Fuck` for development:
+Install `The Fix` for development:
 
 ```bash
 pip install -r requirements.txt

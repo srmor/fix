@@ -1,8 +1,8 @@
 from subprocess import PIPE
 from mock import patch, Mock
 import pytest
-from thefuck.rules.no_command import match, get_new_command
-from thefuck.main import Command
+from thefix.rules.no_command import match, get_new_command
+from thefix.main import Command
 
 
 @pytest.fixture
@@ -21,7 +21,7 @@ vom: command not found
 
 @pytest.fixture
 def bins_exists(request):
-    p = patch('thefuck.rules.no_command.which',
+    p = patch('thefix.rules.no_command.which',
               return_value=True)
     p.start()
     request.addfinalizer(p.stop)
@@ -36,7 +36,7 @@ def settings():
 
 @pytest.mark.usefixtures('bins_exists')
 def test_match(command_found, command_not_found, settings):
-    with patch('thefuck.rules.no_command.Popen') as Popen:
+    with patch('thefix.rules.no_command.Popen') as Popen:
         Popen.return_value.stderr.read.return_value = command_found
         assert match(Command('aptget install vim', '', ''), settings)
         Popen.assert_called_once_with('/usr/lib/command-not-found aptget',
@@ -44,7 +44,7 @@ def test_match(command_found, command_not_found, settings):
         Popen.return_value.stderr.read.return_value = command_not_found
         assert not match(Command('ls', '', ''), settings)
 
-    with patch('thefuck.rules.no_command.Popen') as Popen:
+    with patch('thefix.rules.no_command.Popen') as Popen:
         Popen.return_value.stderr.read.return_value = command_found
         assert match(Command('sudo aptget install vim', '', ''),
                      Mock(command_not_found='test'))
@@ -54,7 +54,7 @@ def test_match(command_found, command_not_found, settings):
 
 @pytest.mark.usefixtures('bins_exists')
 def test_get_new_command(command_found):
-    with patch('thefuck.rules.no_command._get_output',
+    with patch('thefix.rules.no_command._get_output',
                return_value=command_found.decode()):
         assert get_new_command(Command('aptget install vim', '', ''), settings)\
             == 'apt-get install vim'
